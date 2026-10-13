@@ -1,0 +1,12 @@
+[
+  {
+    "title": "CS 332 - Deep Learning",
+    "url": "https://catalog.skidmore.edu/courses-study/cs/",
+    "content": "Credits: 4\n\nAn introduction to deep learning. Deep learning is a powerful technique for finding patterns in data that has been the driving force behind the advancement of AI in the twenty-first century. Students will investigate the primary techniques that fall under the umbrella of deep learning as well as the underlying mathematics. Topics include probability, gradient descent, backpropagation, neural networks, recurrent neural networks, transformers, and large language models. Three hours of lecture and two hours of lab each week. In the labs, students will develop machine learning applications and experiment with those applications on real data.\n\nPrerequisites: MA 111 (or equivalent); MA 200; at least one of CS 209, (CS 106 and MA 215), MA 316, or PY 331; or permission of the instructor.\n\nNotes: Fulfills Applied Quantitative Reasoning requirement."
+  },
+  {
+    "title": "Introduction to Skidmore College",
+    "url": "https://www.skidmore.edu/about/index.php",
+    "content": "Skidmore College is consistently ranked one of the nation’s top liberal arts colleges, recognized for its high-impact learning, small classes, and student well-being. With rigorous academics, 40+ majors and minors, and a supportive, kind community of 2,700 students from around the world, you can expect Skidmore to challenge you — and for you to shape Skidmore in return."
+  }
+]
