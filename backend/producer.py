@@ -11,7 +11,7 @@ load_dotenv()
 PASSWORD = os.getenv("PASSWORD")
 
 # Establish the queue and the connection
-connection = Redis(host="192.168.0.12", port=6379, password=PASSWORD)
+connection = Redis(host="192.168.0.12", port=6379, password=PASSWORD, decode_responses=True)
 toLLM = Queue("toLLM", connection=connection)
 
 # Dummy job

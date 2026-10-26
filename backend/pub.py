@@ -9,8 +9,14 @@ from getpass import getpass
 load_dotenv()
 PASSWORD = os.getenv("PASSWORD")
 
-r = Redis(host="192.168.0.12", port=6379, password=PASSWORD)
+r = Redis(host="192.168.0.12", port=6379, password=PASSWORD, decode_responses=True)
 r.ping()
 
-# Phát một thông báo lên đúng channel.
-print(r.publish("practice", "hello"))
+# Use a fixed ID for this experiment.
+job_id = "abc123"
+
+# Store the answer before announcing it.
+r.set(f"response:{job_id}", "Hello from the worker")
+
+# Notify subscribers which job has an answer ready.
+print(r.publish("practice", job_id))
