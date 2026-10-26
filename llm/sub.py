@@ -10,4 +10,8 @@ sub.subscribe("practice")
 
 # Chờ và in các thông báo nhận được.
 for message in sub.listen():
-    print(message)
+    if message["type"] == "message":
+        # Use the published job ID to retrieve its stored answer.
+        job_id = message["data"]
+        answer = r.get(f"response:{job_id}")
+        print(job_id, answer)
