@@ -9,7 +9,7 @@ def process_prompt(prompt):
     # Build the same request body that worked with curl.
     payload = {
         "model": "qwen2.5:0.5b",
-        "prompt": "Explain what a job queue does in two short sentences.",
+        "prompt": prompt,
         "stream": False
     }
 
@@ -22,6 +22,13 @@ def process_prompt(prompt):
 
     # Extract and display the generated answer.
     answer = data["response"]
+
+    # Get the RQ job currently executing.
+    job = get_current_job()
+
+    # Store the generated answer where the producer is polling.
+    r = job.connection
+    r.set(f"response:{job.id}", answer)
 
     return answer
 
