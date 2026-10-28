@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 from redis import Redis
 from rq import Queue
-from tasks import process_prompt, process_array
 from rq.job import Job
 import time
 

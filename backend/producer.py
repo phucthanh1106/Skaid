@@ -15,8 +15,8 @@ redis_server = Redis(host="192.168.0.12", port=6379, password=PASSWORD)
 toLLM = Queue("toLLM", connection=redis_server)
 
 # Submit the dummy job without importing the worker's task locally.
-array = [2, 4, 6]
-job = toLLM.enqueue("tasks.process_array", array)
+prompt = input("Type your prompt: ")
+job = toLLM.enqueue("tasks.process_prompt", prompt)
 print("Submitted job:", job.id)
 
 # Check for the stored answer for up to 30 seconds.
