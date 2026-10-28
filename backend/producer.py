@@ -19,8 +19,9 @@ prompt = input("Type your prompt: ")
 job = toLLM.enqueue("tasks.process_prompt", prompt)
 print("Submitted job:", job.id)
 
-# Check for the stored answer for up to 30 seconds.
-deadline = time.monotonic() + 30
+# Check for the stored answer for up to 60 seconds.
+wait_seconds = 60
+deadline = time.monotonic() + wait_seconds
 
 while time.monotonic() < deadline:
     answer = redis_server.get(f"response:{job.id}")
@@ -28,6 +29,17 @@ while time.monotonic() < deadline:
     # Display the answer once the worker has stored it.
     if answer is not None:
         print(job.id, answer.decode("utf-8"))
+        break
+
+    # Check for a job that ended without producing an answer.
+    status = job.get_status(refresh=True)
+    if status in ("failed", "stopped", "canceled"):
+        print("Job ended without an answer:", job.id, status)
+
+        # Fetch the worker's saved traceback when execution failed.
+        if status == "failed":
+            job.refresh()
+            print(job.exc_info)
         break
 
     # Wait one second before checking again.

@@ -28,7 +28,7 @@ def process_prompt(prompt):
 
     # Store the generated answer where the producer is polling.
     r = job.connection
-    r.set(f"response:{job.id}", answer)
+    r.set(f"response:{job.id}", answer, ex=3600)
 
     return answer
 
