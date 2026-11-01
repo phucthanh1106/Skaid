@@ -1,0 +1,4 @@
+# Keep installed dependencies and generated files out of Git.
+node_modules/
+dist/
+.env

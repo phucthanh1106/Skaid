@@ -16,7 +16,7 @@ https://docs.ollama.com/linux
 - The Ollama API is available at 127.0.0.1:11434
 
 ## Models
-qwen2.5:0.5b: 0.5 billion
+qwen2.5:0.5b: 0.5 billion 
 
 ## /set verbose
 total duration:       31.174024305s
@@ -33,3 +33,7 @@ eval rate:            8.18 tokens/s
 | Generate answer | 11.00 s | Produce 90 output tokens |
 
 => User’s total wait = time waiting in queue + inference time
+
+## Some commands
+ollama run qwen2.5:0.5b
+ollama ps

@@ -3,21 +3,12 @@ import time
 from dotenv import load_dotenv
 from redis import Redis
 from rq import Queue
+from queue_connection import redis_server, toLLM
 
-# Load environment variables.
-load_dotenv()
-PASSWORD = os.getenv("PASSWORD")
-
-# Connect to Redis without automatic text decoding, as required by RQ.
-redis_server = Redis(host="192.168.0.12", port=6379, password=PASSWORD)
-
-# Initialize the job queue.
-toLLM = Queue("toLLM", connection=redis_server)
 
 # Submit the dummy job without importing the worker's task locally.
 prompt = input("Type your prompt: ")
 job = toLLM.enqueue("tasks.process_prompt", prompt)
-print("Submitted job:", job.id)
 
 # Check for the stored answer for up to 60 seconds.
 wait_seconds = 60

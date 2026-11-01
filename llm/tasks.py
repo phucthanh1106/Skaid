@@ -3,7 +3,6 @@ from rq import get_current_job
 import json
 from urllib.request import Request, urlopen
 
-
 # Process a prompt; later this function will call the LLM.
 def process_prompt(prompt):
     # Build the same request body that worked with curl.
@@ -30,16 +29,4 @@ def process_prompt(prompt):
     r = job.connection
     r.set(f"response:{job.id}", answer, ex=3600)
 
-    return answer
-
-def process_array(array):
-    job = get_current_job()
-    answer = sum(array)
-
-    # # Reuse redis connection
-    # r = job.connection
-    # r.set(f"response:{job.id}", answer)
-
-    # # Notify subscribers after the answer is stored in redis 
-    # r.publish("llm_responses", job.id)
     return answer
