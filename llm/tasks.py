@@ -2,12 +2,15 @@ from socket import gethostname
 from rq import get_current_job
 import json
 from urllib.request import Request, urlopen
+import os
+
+MODEL = os.getenv("MODEL")
 
 # Process a prompt; later this function will call the LLM.
 def process_prompt(prompt):
     # Build the same request body that worked with curl.
     payload = {
-        "model": "qwen2.5:0.5b",
+        "model": "qwen3:4b",
         "prompt": prompt,
         "stream": False
     }
