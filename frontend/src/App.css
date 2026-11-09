@@ -57,3 +57,12 @@ button:focus-visible { outline: 3px solid #8fa877; outline-offset: 3px; }
     button { padding: 12px; }
     .footnote { font-size: 10px; }
 }
+
+/* Keep message authors and local timestamps together. */
+.message-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 8px; }
+.message-heading .speaker { margin: 0; }
+.timestamp { font-size: 10px; color: #6b7767; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Distinguish total response time from the generated answer. */
+.response-time { margin: 10px 0 0; font-size: 11px; color: #6b7767; }
+.waiting span { white-space: nowrap; font-variant-numeric: tabular-nums; }

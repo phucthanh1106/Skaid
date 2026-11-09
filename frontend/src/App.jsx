@@ -1,13 +1,40 @@
 import React, { useEffect, useRef, useState } from "react";
 import { sendPrompt } from "./api.js";
 
+// Format elapsed seconds as minutes and seconds.
+function formatDuration(seconds) {
+    return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
 // Display the conversation and send one prompt at a time.
 export default function App() {
     const [messages, setMessages] = useState([]);
     const [prompt, setPrompt] = useState("");
     const [waiting, setWaiting] = useState(false);
     const [error, setError] = useState("");
+    const [jobStatus, setJobStatus] = useState("submitting");
+    const [elapsedSeconds, setElapsedSeconds] = useState(0);
     const conversation = useRef(null);
+    const requestStartedAt = useRef(0);
+
+    // Describe the worker state without claiming generation has already started.
+    const statusLabels = {
+        submitting: "Sending prompt…",
+        queued: "Waiting for a worker…",
+        started: "Skaid is working…",
+        deferred: "Waiting for a dependency…",
+        scheduled: "Waiting for scheduled execution…",
+        finished: "Answer ready."
+    };
+
+    // Update elapsed waiting time once per second and clean up after completion.
+    useEffect(() => {
+        if (!waiting) return;
+        const timer = setInterval(() => {
+            setElapsedSeconds(Math.floor((performance.now() - requestStartedAt.current) / 1000));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [waiting]);
 
     // Keep the newest message visible as the conversation grows.
     useEffect(() => {
@@ -20,14 +47,21 @@ export default function App() {
         const text = prompt.trim();
         if (!text || waiting) return;
 
-        setMessages(current => [...current, { role: "user", content: text }]);
+        // Timestamp submission and start the total waiting-time clock.
+        requestStartedAt.current = performance.now();
+        setJobStatus("submitting");
+        setElapsedSeconds(0);
+        setMessages(current => [...current, { role: "user", content: text, timestamp: new Date().toISOString() }]);
         setPrompt("");
         setError("");
         setWaiting(true);
 
         try {
-            const answer = await sendPrompt(text);
-            setMessages(current => [...current, { role: "assistant", content: answer }]);
+            const answer = await sendPrompt(text, setJobStatus);
+
+            // Timestamp receipt and retain the full response time, including queue waiting.
+            const elapsedSeconds = Math.floor((performance.now() - requestStartedAt.current) / 1000);
+            setMessages(current => [...current, { role: "assistant", content: answer, timestamp: new Date().toISOString(), elapsedSeconds: elapsedSeconds }]);
         } catch (error) {
             setError(error.message || "Could not get an answer. Please try again.");
             setPrompt(text);
@@ -58,11 +92,17 @@ export default function App() {
                 )}
                 {messages.map((message, index) => (
                     <article className={`message ${message.role}`} key={index}>
-                        <p className="speaker">{message.role === "user" ? "YOU" : "SKAID"}</p>
+                        {/* Show each message's timestamp in the browser's local timezone. */}
+                        <div className="message-heading">
+                            <p className="speaker">{message.role === "user" ? "YOU" : "SKAID"}</p>
+                            <time className="timestamp" dateTime={message.timestamp} title={new Date(message.timestamp).toLocaleString()}>{new Date(message.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</time>
+                        </div>
                         <p className="content">{message.content}</p>
+                        {message.role === "assistant" && <p className="response-time">Response time {formatDuration(message.elapsedSeconds)}</p>}
                     </article>
                 ))}
-                {waiting && <p className="waiting" role="status">Waiting for an answer…</p>}
+                {/* Keep the visual timer quiet for screen readers as it changes each second. */}
+                {waiting && <p className="waiting" role="status">{statusLabels[jobStatus] || "Waiting for an answer…"} <span aria-hidden="true">· {formatDuration(elapsedSeconds)} elapsed</span></p>}
             </section>
 
             {/* Keep API failures visible and allow the prompt to be retried. */}
