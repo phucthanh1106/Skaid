@@ -1,9 +1,5 @@
-import os
 import time
-from dotenv import load_dotenv
-from redis import Redis
-from rq import Queue
-from queue_connection import redis_server, toLLM
+from app.queue_connection import redis_server, toLLM
 
 
 # Submit the dummy job without importing the worker's task locally.
@@ -37,4 +33,4 @@ while time.monotonic() < deadline:
     time.sleep(1)
 else:
     # A timeout stops waiting; it does not cancel the job.
-    print("No answer within 30 seconds. Job ID:", job.id)
+    print(f"No answer within {wait_seconds} seconds. Job ID:", job.id)

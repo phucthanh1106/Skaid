@@ -1,19 +1,4 @@
-import os
-from dotenv import load_dotenv
-from redis import Redis
-from rq import Queue
-from rq.job import Job
-import time
-
-# Load ENV variables
-load_dotenv()
-PASSWORD = os.getenv("PASSWORD")
-
-# Establish the Redis connection 
-redis_server = Redis(host="192.168.0.12", port=6379, password=PASSWORD)
-
-# Initialize redis queue to hold jobs 
-toLLM = Queue("toLLM", connection=redis_server)
+from app.queue_connection import redis_server, toLLM
 
 # Initialize subscriber to listen to responses from worker and confirm registration
 sub = redis_server.pubsub()

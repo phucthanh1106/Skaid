@@ -18,7 +18,7 @@ export async function sendPrompt(prompt) {
     // Read the job ID returned by the POST endpoint.
     const job = await submitted.json();
     const jobId = job.job_id;
-    const deadline = Date.now() + 300000;
+    const deadline = Date.now() + 60000;
 
     // Check this specific job for up to five minutes.
     while (Date.now() < deadline) {
@@ -31,7 +31,7 @@ export async function sendPrompt(prompt) {
         const result = await response.json();
 
         // Return the answer string expected by App.jsx.
-        if (result !== null) {
+        if (result.answer == "Finished") {
             return result;
         }
 
