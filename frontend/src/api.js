@@ -31,7 +31,7 @@ export async function sendPrompt(prompt) {
         const result = await response.json();
 
         // Return the answer string expected by App.jsx.
-        if (result) {
+        if (result !== null) {
             return result;
         }
 

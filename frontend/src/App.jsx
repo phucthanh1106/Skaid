@@ -47,14 +47,14 @@ export default function App() {
     return (
         <main className="chat">
             <header className="header">
-                <div><p className="eyebrow">YOUR RASPBERRY PI ASSISTANT</p><h1>Skaid Chat<span>.</span></h1></div>
-                <span className="demo">Demo mode — API not connected</span>
+                <div><p className="eyebrow">YOUR PERSONAL TEACHING ASSISTANT</p><h1>Skaid Chat<span>.</span></h1></div>
+                <img className="wordmark" src="/skidmore-logo.svg" alt="Skidmore College" />
             </header>
 
             {/* Render model output as plain text, including line breaks. */}
             <section className="conversation" ref={conversation} role="log" aria-label="Conversation" aria-live="polite">
                 {messages.length === 0 && (
-                    <div className="empty"><span className="mark">S</span><h2>Start a conversation.</h2><p>Ask a question or explore an idea.<br />Replies are simulated until you connect FastAPI.</p></div>
+                    <div className="empty"><img className="mark" src="/skidmore-seal.png" alt="Skidmore College seal" /><h2>Start a conversation.</h2><p>Ask a question or explore an idea.<br /></p></div>
                 )}
                 {messages.map((message, index) => (
                     <article className={`message ${message.role}`} key={index}>

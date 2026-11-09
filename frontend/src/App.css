@@ -13,7 +13,7 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 
 /* Keep the conversation and composer inside the viewport. */
 .chat { max-width: 920px; height: 100dvh; min-height: 420px; margin: auto; padding: 32px 28px 16px; display: flex; flex-direction: column; }
-.header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 24px; border-bottom: 1px solid #dde2d8; }
+.header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 12px; border-bottom: 1px solid #dde2d8; }
 .eyebrow { font-size: 10px; letter-spacing: 0.15em; color: #6c786d; margin: 0 0 8px; }
 h1 { font-size: 28px; letter-spacing: -0.06em; margin: 0; }
 h1 span { color: #738652; }
@@ -22,8 +22,11 @@ h1 span { color: #738652; }
 
 /* Show a useful empty state before the first prompt. */
 .empty { min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px 0; }
-.mark { width: 48px; height: 48px; display: grid; place-items: center; background: #e5eadc; color: #52663c; font-size: 24px; border-radius: 16px; }
-h2 { margin: 20px 0 8px; font-size: 28px; letter-spacing: -0.04em; }
+/* Keep the wordmark at the top right without stretching it. */
+.wordmark { display: block; width: 170px; max-width: 100%; height: auto; transform: translateY(12px);}
+/* Show the circular college logo above the empty conversation. */
+.mark { display: block; width: 52px; height: 52px; object-fit: contain; border-radius: 50%; }
+h2 { margin: 8px 0 8px; font-size: 28px; letter-spacing: -0.04em; }
 .empty p { color: #727c74; font-size: 14px; line-height: 1.7; margin: 0; }
 
 /* Separate user and assistant messages without hiding long text. */
@@ -48,7 +51,7 @@ button:focus-visible { outline: 3px solid #8fa877; outline-offset: 3px; }
 /* Fit smaller screens without horizontal scrolling. */
 @media (max-width: 600px) {
     .chat { padding: 20px 14px 12px; }
-    .header { align-items: flex-start; flex-direction: column; gap: 12px; padding-bottom: 18px; }
+    .header { gap: 12px; padding-bottom: 18px; }
     .message { max-width: 95%; padding: 14px; }
     h2 { font-size: 24px; }
     button { padding: 12px; }
