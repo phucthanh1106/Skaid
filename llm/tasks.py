@@ -10,7 +10,7 @@ MODEL = os.getenv("MODEL")
 def process_prompt(prompt):
     # Build the same request body that worked with curl.
     payload = {
-        "model": "qwen3:4b",
+        "model": "qwen2.5:1.5b",
         "prompt": prompt,
         "stream": False
     }
