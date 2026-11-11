@@ -13,7 +13,7 @@ export async function sendPrompt(prompt, onStatus) {
     // Keep the existing one-minute polling budget for this job.
     const job = await submitted.json();
     const jobId = job.job_id;
-    const deadline = Date.now() + 60000;
+    const deadline = Date.now() + 120000;
 
     while (Date.now() < deadline) {
         const response = await fetch(`/api/messages/${encodeURIComponent(jobId)}`);
