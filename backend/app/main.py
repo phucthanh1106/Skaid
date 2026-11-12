@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers.messages import message_router
+from app.routers.users import user_router
 
 # Define cors origins
 origins = [
@@ -16,4 +17,6 @@ app.add_middleware(
     allow_methods=["*"], 
     allow_headers=["*"]
 )
+
 app.include_router(message_router)
+app.include_router(user_router)
