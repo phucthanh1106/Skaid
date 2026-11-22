@@ -12,14 +12,18 @@ def process_prompt(prompt):
     payload = {
         "model": "qwen2.5:1.5b",
         "prompt": prompt,
-        "stream": False
+        "stream": False,
+        "options": {
+            "temperature": 0.2,
+            "num_predict": 200
+        }
     }
 
     # Convert the Python dictionary into JSON bytes for HTTP.
     request = Request("http://localhost:11434/api/generate", data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"}, method="POST")
 
-    # Send the request and wait up to 120 seconds for network operations.
-    with urlopen(request, timeout=120) as response:
+    # Allow more time for processing the retrieved slide context.
+    with urlopen(request, timeout=300) as response:
         data = json.loads(response.read().decode("utf-8"))
 
     # Extract and display the generated answer.

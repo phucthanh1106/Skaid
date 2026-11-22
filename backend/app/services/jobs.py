@@ -1,10 +1,15 @@
 from rq.job import Job
 from app.queue_connection import redis_server, toLLM
+from app.services.rag import retrieve_pages, build_rag_prompt
 
 
-# Save the authenticated owner alongside the job before it is queued.
+# Retrieve evidence, build the prompt, and queue generation.
 def submit_prompt(prompt, user_id):
-    return toLLM.enqueue("tasks.process_prompt", prompt, meta={"user_id": user_id})
+    results = retrieve_pages(prompt)
+    rag_prompt = build_rag_prompt(prompt, results)
+
+    # Preserve ownership and allow a longer runtime for the Pi.
+    return toLLM.enqueue("tasks.process_prompt", rag_prompt, meta={"user_id": user_id}, job_timeout=360)
 
 
 # Check ownership before reading either the answer or the job status.

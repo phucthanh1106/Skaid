@@ -10,10 +10,10 @@ export async function sendPrompt(prompt, onStatus) {
         throw new Error(`Could not submit prompt: HTTP ${submitted.status}`);
     }
 
-    // Keep the existing one-minute polling budget for this job.
+    // Wait up to six minutes after receiving the job ID.
     const job = await submitted.json();
     const jobId = job.job_id;
-    const deadline = Date.now() + 120000;
+    const deadline = Date.now() + 360000;
 
     while (Date.now() < deadline) {
         const response = await fetch(`/api/messages/${encodeURIComponent(jobId)}`);
