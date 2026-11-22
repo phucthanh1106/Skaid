@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from rq.exceptions import NoSuchJobError
 from app.services.auth import get_current_user_id
-from app.services.jobs import get_answer, submit_prompt
+from app.jobs import get_answer, submit_prompt
 
 # Group the message endpoints under their shared URL prefix.
 message_router = APIRouter(prefix="/api/messages")

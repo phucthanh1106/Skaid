@@ -1,4 +1,4 @@
-from app.queue_connection import redis_server, toLLM
+from backend.app.services.queue_connection import redis_server, toLLM
 
 # Initialize subscriber to listen to responses from worker and confirm registration
 sub = redis_server.pubsub()

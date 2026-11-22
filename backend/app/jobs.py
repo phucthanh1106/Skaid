@@ -1,6 +1,7 @@
 from rq.job import Job
-from app.queue_connection import redis_server, toLLM
-from app.services.rag import retrieve_pages, build_rag_prompt
+from app.services.queue_connection import redis_server, toLLM
+from app.rag.retrieve import retrieve_pages
+from app.rag.generate import build_rag_prompt
 
 
 # Retrieve evidence, build the prompt, and queue generation.

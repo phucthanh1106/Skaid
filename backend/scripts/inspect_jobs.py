@@ -1,6 +1,6 @@
 from rq.job import Job
 from rq.exceptions import NoSuchJobError
-from app.queue_connection import redis_server
+from backend.app.services.queue_connection import redis_server
 
 # Retrieve an existing job without submitting another one.
 job_id = input("Job ID: ").strip()

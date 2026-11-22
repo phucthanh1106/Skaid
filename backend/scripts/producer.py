@@ -1,5 +1,5 @@
 import time
-from app.queue_connection import redis_server, toLLM
+from backend.app.services.queue_connection import redis_server, toLLM
 
 
 # Submit the dummy job without importing the worker's task locally.

@@ -35,7 +35,7 @@ eval rate:            8.18 tokens/s
 => User’s total wait = time waiting in queue + inference time
 
 ## Some commands
-ollama run qwen2.5:3b
+ollama run qwen2.5:1.5b
 ollama ps
 ollama list
 watch -n 1 free -h
