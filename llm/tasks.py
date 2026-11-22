@@ -14,8 +14,9 @@ def process_prompt(prompt):
         "prompt": prompt,
         "stream": False,
         "options": {
-            "temperature": 0.2,
-            "num_predict": 200
+            "temperature": 0.1,
+            "num_predict": 200,
+            "num_thread": 4
         }
     }
 
@@ -31,6 +32,29 @@ def process_prompt(prompt):
 
     # Get the RQ job currently executing.
     job = get_current_job()
+
+    #--------------START BENCHMARK--------------
+    # Convert Ollama's timing measurements into seconds.
+    load_seconds = data["load_duration"] / 1_000_000_000
+    prompt_seconds = data["prompt_eval_duration"] / 1_000_000_000
+    generation_seconds = data["eval_duration"] / 1_000_000_000
+
+    # Count the input and generated tokens.
+    input_tokens = data["prompt_eval_count"]
+    output_tokens = data["eval_count"]
+    speed = output_tokens / generation_seconds
+
+    # Show which stage consumed the time for this job.
+    print(f"Job: {job.id}", flush=True)
+    print(f"Load: {load_seconds:.2f}s", flush=True)
+    print(f"Prompt: {input_tokens} tokens, {prompt_seconds:.2f}s", flush=True)
+    print(f"Generation: {output_tokens} tokens, {generation_seconds:.2f}s", flush=True)
+    print(f"Generation speed: {speed:.2f} tokens/s", flush=True)
+
+    # Report reused prompt tokens when this Ollama version provides them.
+    if "prompt_eval_cached_count" in data:
+        print(f"Cached prompt tokens: {data['prompt_eval_cached_count']}", flush=True)
+    #--------------END BENCHMARK--------------
 
     # Store the generated answer where the producer is polling.
     r = job.connection
